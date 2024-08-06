@@ -13,63 +13,6 @@ pipeline {
                 // Create the Dockerfile manually
                 script {
                     writeFile file: 'Dockerfile', text: '''\
-FROM python:3.10-slim
-
-WORKDIR /app
-
-# Copy requirements.txt
-COPY requirements.txt ./
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the entire backend directory (assuming app.py is inside)
-COPY . .
-
-EXPOSE 3000
-
-CMD ["python", "app.py"]
-'''
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                // Build the Docker image for the backend using the Dockerfile
-                sh 'mv Dockerfile ai-python-devops-test/backend/'
-                sh 'cd ai-python-devops-test/backend/'
-                sh 'docker build -t backend:latest .'
-            }
-        }
-        stage('Deploy to Server') {
-            steps {
-                // Deploy the Docker image to ECS (replace with your ECS cluster/service details)
-                // Example of running the Docker container locally
-                sh 'docker run -d -p 5000:5000 backend:latest'
-            }
-        }
-    }
-}
-
-
-
-Frontend
-
-pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Clones the backend repository
-                git branch: 'main', url: 'https://gitlab.com/ai-assessments/ai-python-devops-test.git'
-            }
-        }
-        stage('Create Dockerfile') {
-            steps {
-                // Create the Dockerfile manually
-                script {
-                    writeFile file: 'Dockerfile', text: '''\
 Frontend
 FROM node:18-alpine
 
