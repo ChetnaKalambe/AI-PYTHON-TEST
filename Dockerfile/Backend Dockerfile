@@ -1,0 +1,17 @@
+
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copy requirements.txt from the backend folder
+COPY backend/requirements.txt ./
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# Copy the entire backend directory (assuming app.py is inside)
+COPY backend/ .
+
+EXPOSE 3001
+
+CMD ["python", "app.py"]
